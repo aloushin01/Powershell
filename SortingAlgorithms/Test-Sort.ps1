@@ -13,7 +13,7 @@ function Test-Sort {
 
     $randomList = $inputList | Sort-Object {Get-Random}
 
-    $mySortedList = MySort -method "Test" -array $randomList
+    $mySortedList = MySort -method "Insertion" -array $randomList
 
     $sortedList = $inputList | Sort-Object
 
@@ -118,6 +118,23 @@ function My-InsertionSort {
         )]
         $array
     )
+
+    $i = 1 # Assuming item at index 0 is already sorted
+    While ($i -lt $array.Length) {
+        $currentItem = $array[$i]
+        $j = $i
+
+        While ($j -gt 0) {
+            if ($array[$j - 1] -gt $currentItem) {
+                $array = Swap -array $array -index1 $j -index2 ($j-1)
+                $j -= 1
+            }
+            else {
+                break # Item is in the correct location. Break out of loop.
+            }
+        }
+        $i += 1
+    }
 
     Return $array
 }
