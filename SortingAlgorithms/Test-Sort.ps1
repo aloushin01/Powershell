@@ -13,7 +13,7 @@ function Test-Sort {
 
     $randomList = $inputList | Sort-Object {Get-Random}
 
-    $mySortedList = MySort -method "Insertion" -array $randomList
+    $mySortedList = MySort -method "Bubble" -array $randomList
 
     $sortedList = $inputList | Sort-Object
 
@@ -49,6 +49,9 @@ function MySort {
     }
     elseif ($sortMethod -eq "Insertion") {
         Return My-InsertionSort $array
+    }
+    elseif ($sortMethod -eq "Bubble") {
+        Return My-BubbleSort $array
     }
     else {
         throw "Method not implemented."
@@ -134,6 +137,29 @@ function My-InsertionSort {
             }
         }
         $i += 1
+    }
+
+    Return $array
+}
+function My-BubbleSort {
+    param (
+        [Parameter(
+            Mandatory=$True,
+            Position=0
+        )]
+        $array
+    )
+
+    $switch = 1
+    while ($switch -eq 1) {
+        $switch = 0
+
+        foreach ($i in 0..($array.Length - 2)) {
+            if ($array[$i] -gt $array[$i + 1]) {
+                $array = Swap -array $array -index1 $i -index2 ($i + 1)
+                $switch = 1
+            }
+        }
     }
 
     Return $array
