@@ -13,18 +13,16 @@ function Test-Sort {
 
     $randomList = $inputList | Sort-Object {Get-Random}
 
-    $mySortedList = MySort -method "Bubble" -array $randomList
+    $mySortedList = MySort -method "Insertion" -array $randomList
 
     $sortedList = $inputList | Sort-Object
 
-    if ((Compare-Object $mySortedList $sortedList -SyncWindow 0).Length -eq 0) {
+    if (@(Compare-Object $mySortedList $sortedList -SyncWindow 0).Length -eq 0) {
         Write-Host "They match!"
     } 
     else {
         Write-Host "No match."
     }
-    Write-Host $mySortedList
-    Write-Host $sortedList
 }
 
 function MySort {
@@ -97,10 +95,10 @@ function My-SelectionSort {
     # Repeat until list is sorted
     While ($i -lt $array.Length) {
         # Identify smallest item in array
-        $minItem = ($array[$i..$array.Length] | Measure-Object -Minimum).Minimum
+        $minItem = ($array[$i..($array.Length - 1)] | Measure-Object -Minimum).Minimum
 
         # Find the index of the smallest item
-        $index = ($array[$i..$array.Length]).IndexOf($minItem) + $i
+        $index = ($array[$i..($array.Length - 1)]).IndexOf($minItem) + $i
 
         # Swap min item into current index we are sorting
         if ($i -ne $index) {
@@ -166,3 +164,4 @@ function My-BubbleSort {
 }
 
 Test-Sort
+# MySort @args
