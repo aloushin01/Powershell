@@ -8,12 +8,12 @@ Quick sort - pick an element out of the array. Divide array into two arrays - on
 #>
 
 function Test-Sort {
-     $inputList = 1..100
+    $inputList = 1..100
     # $inputList = "apple", "orange", "cat", "tree", "apple"
 
     $randomList = $inputList | Sort-Object {Get-Random}
 
-    $mySortedList = MySort -array $randomList
+    $mySortedList = MySort -method "Test" -array $randomList
 
     $sortedList = $inputList | Sort-Object
 
@@ -31,29 +31,28 @@ function MySort {
     param (
         [Parameter(
             Mandatory=$True,
-            ValueFromPipeline=$True
+            Position=0
+        )]
+        [Alias("Method")]
+        [ValidateSet("Selection","Insertion","Bubble","Merge","Quick")]
+        $sortMethod,
+    
+        [Parameter(
+            Mandatory=$True,
+            Position=1
         )]
         $array
     )
 
-    $i = 0
-    # Repeat until list is sorted
-    While ($i -lt $array.Length) {
-        # Identify smallest item in array
-        $minItem = ($array[$i..$array.Length] | Measure-Object -Minimum).Minimum
-
-        # Find the index of the smallest item
-        $index = ($array[$i..$array.Length]).IndexOf($minItem) + $i
-
-        # Swap min item into current index we are sorting
-        if ($i -ne $index) {
-            $array = Swap -array $array -index1 $i -index2 $index
-        }
-
-        $i += 1
+    if ($sortMethod -eq "Selection") {
+        Return My-SelectionSort $array
     }
-
-    Return $array
+    elseif ($sortMethod -eq "Insertion") {
+        Return My-InsertionSort $array
+    }
+    else {
+        throw "Method not implemented."
+    }
 }
 
 function Swap {
@@ -80,6 +79,47 @@ function Swap {
 
     Return $array
 
+}
+
+function My-SelectionSort {
+    param (
+        [Parameter(
+            Mandatory=$True,
+            Position=0
+        )]
+        $array
+    )
+
+    $i = 0
+    # Repeat until list is sorted
+    While ($i -lt $array.Length) {
+        # Identify smallest item in array
+        $minItem = ($array[$i..$array.Length] | Measure-Object -Minimum).Minimum
+
+        # Find the index of the smallest item
+        $index = ($array[$i..$array.Length]).IndexOf($minItem) + $i
+
+        # Swap min item into current index we are sorting
+        if ($i -ne $index) {
+            $array = Swap -array $array -index1 $i -index2 $index
+        }
+
+        $i += 1
+    }
+
+    Return $array
+}
+
+function My-InsertionSort {
+    param (
+        [Parameter(
+            Mandatory=$True,
+            Position=0
+        )]
+        $array
+    )
+
+    Return $array
 }
 
 Test-Sort
