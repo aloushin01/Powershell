@@ -2,4 +2,4 @@
 .vscode
 
 # Ignore generated test files
-Miscellaneous\Test\TestFiles
+Miscellaneous/Test/TestFiles/
