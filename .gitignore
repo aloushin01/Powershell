@@ -1,2 +1,5 @@
 # Ignore .vscode workspace files
 .vscode
+
+# Ignore generated test files
+Miscellaneous\Test\TestFiles
